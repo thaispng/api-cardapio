@@ -11,7 +11,7 @@ model Produto {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   nome         String
   preco        Float
-  imagem       String
+  imagem       String?
   descricao    String
   categoriaId  String   @db.ObjectId
   criadoEm     DateTime @default(now())
@@ -28,5 +28,5 @@ model Categoria {
 model Cardapio {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   turno     String   @unique
-  produtos  String[] @db.ObjectId // Lista de IDs de produtos
+  produtos  String[] @db.ObjectId 
 }
