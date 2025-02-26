@@ -8,5 +8,6 @@ import { CommonModule } from '../common/dto/common.module';
   imports: [CommonModule],
   controllers: [CategoriaController],
   providers: [CategoriaService, PrismaService],
+  exports: [CategoriaService],
 })
 export class CategoriaModule {}

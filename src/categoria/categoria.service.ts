@@ -18,8 +18,21 @@ export class CategoriaService {
   }
 
   async findAll() {
-    return this.prisma.categoria.findMany({
-      include: { produtos: true },
+    return this.prisma.categoria.findMany();
+  }
+
+  async findById(id: string) {
+    return this.prisma.categoria.findUnique({ where: { id } });
+  }
+
+  async update(id: string, dto: CreateCategoriaDto) {
+    return this.prisma.categoria.update({
+      where: { id },
+      data: { nome: dto.nome },
     });
+  }
+
+  async delete(id: string) {
+    return this.prisma.categoria.delete({ where: { id } });
   }
 }
