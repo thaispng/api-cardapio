@@ -1,12 +1,14 @@
-// src/cardapio/dto/create-cardapio.dto.ts
-
+import { IsEnum, IsArray, IsMongoId } from 'class-validator';
+import { Turno } from '../../common/enums/turno.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCardapioDto {
-  @ApiProperty()
-  turno: string;
+  @ApiProperty({ enum: Turno, description: 'Turno do cardápio' })
+  @IsEnum(Turno)
+  turno: Turno;
 
-  @ApiProperty()
-  produtos: string[]; // IDs de produtos
-
+  @ApiProperty({ type: [String], description: 'Lista de IDs dos produtos' })
+  @IsArray()
+  @IsMongoId({ each: true })
+  produtoIds: string[];
 }

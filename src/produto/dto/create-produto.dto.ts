@@ -1,25 +1,26 @@
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateProdutoDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'Nome do produto' })
   @IsString()
   nome: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Preço do produto' })
   @IsNumber()
   preco: number;
 
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  imagem: string;
-
-  @ApiProperty()
+  @ApiProperty({ description: 'Descrição do produto' })
   @IsString()
   descricao: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'URL da imagem', required: false })
+  @IsOptional()
   @IsString()
-  categoriaId: string;
+  imagem?: string;
+
+  @ApiProperty({ description: 'ID da categoria (opcional)', required: false })
+  @IsOptional()
+  @IsString()
+  categoriaId?: string;
 }

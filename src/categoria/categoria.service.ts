@@ -6,9 +6,20 @@ import { CreateCategoriaDto } from './dto/create-categoria.dto';
 export class CategoriaService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createCategoriaDto: CreateCategoriaDto) {
-    return await this.prisma.categoria.create({
-      data: createCategoriaDto,
+  async create(dto: CreateCategoriaDto) {
+    try {
+      return await this.prisma.categoria.create({
+        data: { nome: dto.nome },
+      });
+    } catch (error) {
+      console.error('Erro ao criar categoria:', error);
+      throw new Error('Erro ao criar categoria');
+    }
+  }
+
+  async findAll() {
+    return this.prisma.categoria.findMany({
+      include: { produtos: true },
     });
   }
 }

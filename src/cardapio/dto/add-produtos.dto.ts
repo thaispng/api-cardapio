@@ -1,9 +1,14 @@
+import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
 
-export class AddProdutosDto {
-  @ApiProperty({ description: 'Array de IDs dos produtos a serem adicionados', type: [String] })
-  @IsArray()
-  @IsString({ each: true })
-  produtosIds: string[];
+export class AddProdutoDto {
+  @ApiProperty({
+    description: 'ID do cardápio ao qual o produto será adicionado',
+  })
+  @IsString()
+  cardapioId: string;
+
+  @ApiProperty({ description: 'ID do produto a ser adicionado' })
+  @IsString()
+  produtoId: string;
 }

@@ -4,5 +4,6 @@ import { CardapioModule } from './cardapio/cardapio.module';
 import { CategoriaModule } from './categoria/categoria.module';
 
 @Module({
-  imports: [ProdutoModule, CardapioModule, CategoriaModule],  })
+  imports: [ProdutoModule, CardapioModule, CategoriaModule],
+})
 export class AppModule {}

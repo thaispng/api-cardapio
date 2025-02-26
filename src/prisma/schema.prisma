@@ -7,26 +7,55 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Categoria {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  nome         String    @unique
+  produtos     Produto[]
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+}
+
 model Produto {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   nome         String
   preco        Float
   imagem       String?
   descricao    String
-  categoriaId  String   @db.ObjectId
-  criadoEm     DateTime @default(now())
-  atualizadoEm DateTime @updatedAt
-}
+  categoriaId  String?   @db.ObjectId  // Campo agora é opcional
+  categoria    Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull) // Relação opcional
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
 
-model Categoria {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  nome         String
-  criadoEm     DateTime @default(now())
-  atualizadoEm DateTime @updatedAt
+  cardapios    CardapioProduto[]
 }
 
 model Cardapio {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  turno     String   @unique
-  produtos  String[] @db.ObjectId 
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  turno        Turno     @unique
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+
+  produtos     CardapioProduto[]
+}
+
+model CardapioProduto {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  cardapioId String    @db.ObjectId
+  produtoId  String    @db.ObjectId
+
+  cardapio   Cardapio  @relation(fields: [cardapioId], references: [id])
+  produto    Produto   @relation(fields: [produtoId], references: [id])
+
+  criadoEm   DateTime  @default(now())
+}
+
+model Counter {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  model String @unique
+  value Int
+}
+
+enum Turno {
+  DIURNO
+  NOTURNO
 }

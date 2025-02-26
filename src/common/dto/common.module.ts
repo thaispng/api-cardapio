@@ -3,13 +3,7 @@ import { ValidationPipe } from '../pipes/validation.pipe';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 
 @Module({
-  providers: [
-    ValidationPipe,   
-    HttpExceptionFilter,  
-  ],
-  exports: [
-    ValidationPipe,   
-    HttpExceptionFilter,   
-  ],
+  providers: [ValidationPipe, HttpExceptionFilter],
+  exports: [ValidationPipe, HttpExceptionFilter],
 })
 export class CommonModule {}

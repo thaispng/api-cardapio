@@ -1,50 +1,41 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateCardapioDto } from './dto/create-cardapio.dto';
 
 @Injectable()
 export class CardapioService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Buscar um cardápio pelo turno (diurno/noturno)
-  async findByTurno(turno: string) {
-    // Buscar o cardápio pelo turno
-    const cardapio = await this.prisma.cardapio.findUnique({
-      where: { turno },
-    });
-
-    if (!cardapio) {
-      throw new NotFoundException('Cardápio não encontrado');
-    }
-
-    // Buscar produtos usando os IDs armazenados no cardápio
-    const produtos = await this.prisma.produto.findMany({
-      where: {
-        id: { in: cardapio.produtos || [] }, // Evita erro se produtos for undefined
+  async create(dto: CreateCardapioDto) {
+    return await this.prisma.cardapio.create({
+      data: {
+        turno: dto.turno,
+        produtos: {
+          create: dto.produtoIds.map((produtoId) => ({
+            produto: { connect: { id: produtoId } },
+          })),
+        },
       },
     });
-
-    return { ...cardapio, produtos };
   }
 
-  // Adicionar produtos ao cardápio
-  async addProdutos(cardapioId: string, produtosIds: string[]) {
-    // Verifica se o cardápio existe
-    const cardapio = await this.prisma.cardapio.findUnique({
-      where: { id: cardapioId },
-    });
+  async findAll(): Promise<any[]> {
+    return this.prisma.cardapio.findMany();
+  }
 
+  async findOne(id: string): Promise<any> {
+    const cardapio = await this.prisma.cardapio.findUnique({ where: { id } });
     if (!cardapio) {
       throw new NotFoundException('Cardápio não encontrado');
     }
+    return cardapio;
+  }
 
-    // Se o cardápio ainda não tiver produtos, inicializa como um array vazio
-    const produtosAtuais = cardapio.produtos ?? [];
-
-    return await this.prisma.cardapio.update({
-      where: { id: cardapioId },
-      data: {
-        produtos: [...new Set([...produtosAtuais, ...produtosIds])], // Evita IDs duplicados
-      },
-    });
+  async remove(id: string): Promise<any> {
+    const cardapio = await this.prisma.cardapio.findUnique({ where: { id } });
+    if (!cardapio) {
+      throw new NotFoundException('Cardápio não encontrado');
+    }
+    return this.prisma.cardapio.delete({ where: { id } });
   }
 }
