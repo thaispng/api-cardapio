@@ -3,8 +3,8 @@ import { CardapioService } from './cardapio.service';
 import { CreateCardapioDto } from './dto/create-cardapio.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('cardapios')
-@Controller('cardapios')
+@ApiTags('cardapio')
+@Controller('cardapio')
 export class CardapioController {
   constructor(private readonly cardapioService: CardapioService) {}
 

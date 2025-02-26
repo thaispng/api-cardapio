@@ -15,7 +15,6 @@ async function bootstrap() {
     .setTitle('Cardápio API')
     .setDescription('API para gerenciar cardápios, produtos e categorias')
     .setVersion('1.0')
-    .addTag('cardapio')
     .addTag('produtos')
     .addTag('categorias')
     .build();
