@@ -17,8 +17,8 @@ export class ProdutoService {
           nome: dto.nome,
           preco: dto.preco,
           descricao: dto.descricao,
-          imagem: dto.imagem || null, 
-          categoriaId: dto.categoriaId || undefined,
+          imagem: dto.imagem || null,
+          categoriaId: dto.categoriaId || null,
         },
       });
     } catch {

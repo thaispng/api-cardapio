@@ -21,8 +21,8 @@ model Produto {
   preco        Float
   imagem       String?
   descricao    String
-  categoriaId  String?   @db.ObjectId  // Campo agora é opcional
-  categoria    Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull) // Relação opcional
+  categoriaId  String?   @db.ObjectId  
+  categoria    Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull) 
   criadoEm     DateTime  @default(now())
   atualizadoEm DateTime  @updatedAt
 
