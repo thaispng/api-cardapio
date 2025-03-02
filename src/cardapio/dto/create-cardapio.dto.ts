@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCardapioDto {
   @ApiProperty({ enum: Turno, description: 'Turno do cardápio' })
-  @IsEnum(Turno)
+  @IsEnum(Turno, { message: 'Turno deve ser DIURNO ou NOTURNO' })
   turno: Turno;
 
   @ApiProperty({ type: [String], description: 'Lista de IDs dos produtos' })

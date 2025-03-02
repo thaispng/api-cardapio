@@ -31,7 +31,7 @@ model Produto {
 
 model Cardapio {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  turno        Turno     @unique
+  turno        Turno
   criadoEm     DateTime  @default(now())
   atualizadoEm DateTime  @updatedAt
 

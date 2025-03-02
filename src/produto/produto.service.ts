@@ -6,7 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { ObjectId } from 'bson'; // Usando bson para validação correta do ObjectId
+import { ObjectId } from 'bson';
 
 @Injectable()
 export class ProdutoService {
