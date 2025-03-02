@@ -12,7 +12,6 @@ export class CardapioService {
   async findOne(id: string): Promise<any> {
     const cardapio = await this.prisma.cardapio.findUnique({
       where: { id },
-      include: { produtos: true },
     });
     if (!cardapio) {
       throw new NotFoundException('Cardápio não encontrado');
@@ -25,8 +24,20 @@ export class CardapioService {
     const turno = horaAtual >= 6 && horaAtual < 18 ? 'DIURNO' : 'NOTURNO';
 
     return this.prisma.cardapio.findFirst({
-      where: { turno },
-      include: { produtos: true },
+      where: { turno: turno },
+      include: {
+        produtos: {
+          select: {
+            produto: {
+              select: {
+                nome: true,
+                categoria: true,
+                preco: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 }

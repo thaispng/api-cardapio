@@ -3,7 +3,7 @@
 import { Controller, Get, NotFoundException } from '@nestjs/common';
 import { CardapioService } from './cardapio.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Cardapio, Produto } from '@prisma/client'; // Importação do tipo
+import { Cardapio, Produto } from '@prisma/client';
 
 @ApiTags('cardapio-atual')
 @Controller('cardapio-atual')
