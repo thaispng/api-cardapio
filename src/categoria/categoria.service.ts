@@ -8,8 +8,16 @@ export class CategoriaService {
 
   async create(dto: CreateCategoriaDto) {
     try {
+      console.log('DTO Recebido:', dto);
+
+      if (!dto.nome) {
+        throw new Error('O campo nome é obrigatório');
+      }
+
       return await this.prisma.categoria.create({
-        data: { nome: dto.nome },
+        data: {
+          nome: dto.nome,
+        },
       });
     } catch (error) {
       console.error('Erro ao criar categoria:', error);
