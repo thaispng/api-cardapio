@@ -10,6 +10,7 @@ import {
 import { ProdutoService } from './produto.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { UpdateProdutoDto } from './dto/update-produto.dto';
 
 @ApiTags('produtos')
 @Controller('produtos')
@@ -46,11 +47,8 @@ export class ProdutoController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Atualizar um produto' })
-  @ApiResponse({ status: 200, description: 'Produto atualizado com sucesso.' })
-  @ApiResponse({ status: 400, description: 'Erro na atualização do produto.' })
-  @ApiResponse({ status: 404, description: 'Produto não encontrado.' })
-  update(@Param('id') id: string, @Body() updateProdutoDto: CreateProdutoDto) {
+  update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
+    console.log('ID recebido para atualização:', id);
     return this.produtoService.update(id, updateProdutoDto);
   }
 

@@ -6,10 +6,12 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
+import { ObjectId } from 'bson'; // Usando bson para validação correta do ObjectId
 
 @Injectable()
 export class ProdutoService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(dto: CreateProdutoDto): Promise<any> {
     try {
       return await this.prisma.produto.create({
@@ -18,7 +20,9 @@ export class ProdutoService {
           preco: dto.preco,
           descricao: dto.descricao,
           imagem: dto.imagem || null,
-          categoriaId: dto.categoriaId || null,
+          categoriaId: dto.categoriaId
+            ? new ObjectId(dto.categoriaId).toString()
+            : null,
         },
       });
     } catch {
@@ -31,6 +35,10 @@ export class ProdutoService {
   }
 
   async findOne(id: string): Promise<any> {
+    if (!id || !ObjectId.isValid(id)) {
+      throw new BadRequestException('ID do produto inválido');
+    }
+
     const produto = await this.prisma.produto.findUnique({ where: { id } });
     if (!produto) {
       throw new NotFoundException('Produto não encontrado');
@@ -39,6 +47,10 @@ export class ProdutoService {
   }
 
   async update(id: string, dto: UpdateProdutoDto): Promise<any> {
+    if (!id || !ObjectId.isValid(id)) {
+      throw new BadRequestException('ID do produto inválido');
+    }
+
     const produto = await this.prisma.produto.findUnique({ where: { id } });
     if (!produto) {
       throw new NotFoundException('Produto não encontrado');
@@ -51,16 +63,23 @@ export class ProdutoService {
         preco: dto.preco ?? produto.preco,
         descricao: dto.descricao ?? produto.descricao,
         imagem: dto.imagem !== undefined ? dto.imagem : produto.imagem,
-        categoriaId: dto.categoriaId ?? produto.categoriaId,
+        categoriaId: dto.categoriaId
+          ? new ObjectId(dto.categoriaId).toString()
+          : produto.categoriaId,
       },
     });
   }
 
   async remove(id: string): Promise<any> {
+    if (!id || !ObjectId.isValid(id)) {
+      throw new BadRequestException('ID do produto inválido');
+    }
+
     const produto = await this.prisma.produto.findUnique({ where: { id } });
     if (!produto) {
       throw new NotFoundException('Produto não encontrado');
     }
+
     return this.prisma.produto.delete({ where: { id } });
   }
 }
